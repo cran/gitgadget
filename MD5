@@ -1,0 +1,10 @@
+263f1c90e80a196738c45b5eeed8c978 *DESCRIPTION
+d4a2e04890119077d72b966a9e2eb49e *NAMESPACE
+282f5b2c98c302a32f4824ffb8bd99ba *R/aaa.R
+eea3a2a7e96099b93cfefb18483aa75f *R/gadget.R
+365a8c765e8606bbf4104b1a9be867d1 *R/git.R
+39f2d0a8046716cbf566c985fa6b749f *README.md
+d7072577b4c0ca43911bcf769a482c34 *inst/app/data/students.csv
+7512b69ecc2d43f93c73768e60655652 *inst/app/www/style.css
+6b6736c1a3558d596c42ee0609765071 *inst/rstudio/addins.dcf
+f327f5a9143ce557ce4abd06588ff9f2 *man/gitgadget.Rd
