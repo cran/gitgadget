@@ -1,4 +1,8 @@
-#' export
+#' Launch gitgadget in Rstudio viewer if available
+#'
+#' @details See \url{https://github.com/vnijs/gitgadget} for documentation
+#'
+#' @export
 gitgadget <- function() {
 
   ## points to gitgadget project unfortunately
@@ -364,7 +368,7 @@ gitgadget <- function() {
           cat("Creating group ...\n")
           create_group(
             input$create_user_name, input$create_password, create_group_lc, input$create_user_file,
-            permission = 20, pre = create_pre_lc, server = input$create_server
+            permission = 20, server = input$create_server
           )
         }
 
@@ -698,6 +702,8 @@ gitgadget <- function() {
 
       cat("Generating merge requests ...\n")
 
+      ## pre not used when called from the gadget interface because the full
+      ## assignment name is retrieved from gitlab
       withProgress(message = "Generating merge requests", value = 0, style = "old", {
         collect_work(
           input$collect_user_name, input$collect_password, input$collect_group,
@@ -715,7 +721,8 @@ gitgadget <- function() {
         cat("Your working directory is not set to the assignment directory or this repo was not created using gitgadget. Please navigate to the assignment directory or add \"fetch = +refs/merge-requests/*/head:refs/remotes/origin/merge-requests/*\" to the remote origin section in .git/config file")
       } else {
 
-
+      ## pre not used when called from the gadget interface because the full
+      ## assignment name is retrieved from gitlab
         withProgress(message = "Fetching merge requests", value = 0, style = "old", {
           fetch_work(
             input$collect_user_name, input$collect_password, input$collect_group,
@@ -748,7 +755,18 @@ gitgadget <- function() {
   }
 
   resp <- runGadget(shinyApp(ui, server), viewer = paneViewer())
+
+  ## attempt to run in separate process
+  # resp <- runGadget(shinyApp(ui, server), viewer = browserViewer())
+  # resp <- runApp(shinyApp(ui, server), launch.browser = FALSE, port = 1234)
+  # resp <- runApp(shinyApp(ui, server), launch.browser = TRUE)
+  # viewer("http://127.0.0.1:4444")
 }
+
+## blocks Rstudio console
+# gitgadget::gitgadget()
+## attempt to run in separate process
+# system(paste0(Sys.which("R"), " -e \"gitgadget:::gitgadget()\""))
 
 ## test section
 main_gadget__ <- FALSE
