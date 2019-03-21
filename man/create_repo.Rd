@@ -4,21 +4,25 @@
 \alias{create_repo}
 \title{Create the main repo from a local directory}
 \usage{
-create_repo(username, password, groupname, assignment, directory, pre = "",
-  server = "https://gitlab.com/api/v3/")
+create_repo(username = Sys.getenv("git.user"),
+  token = Sys.getenv("git.token"), repo = basename(getwd()),
+  base_dir = dirname(getwd()), groupname = "", pre = "",
+  ssh = FALSE, server = "https://gitlab.com/api/v4/")
 }
 \arguments{
-\item{username}{Gitlab username}
+\item{username}{Username}
 
-\item{password}{Gitlab password}
+\item{token}{Token (e.g., Sys.getenv("git.token") or Sys.getenv("GITHUB_PAT"))}
+
+\item{repo}{Name of the repo (assigment)}
+
+\item{base_dir}{Base directory for the repo. file.path(directory, assignment) should exist}
 
 \item{groupname}{Group to create on gitlab (defaults to user's namespace)}
 
-\item{assignment}{Name of the assigment (repo)}
+\item{pre}{Pre-amble for the repo (assignment) name}
 
-\item{directory}{Base directory for the repo. file.path(directory, assignment) should exist}
-
-\item{pre}{Pre-amble for the assignment name, usually groupname + "-"}
+\item{ssh}{Use SSH for authentication}
 
 \item{server}{The gitlab API server}
 }
@@ -28,4 +32,3 @@ Create the main repo from a local directory
 \details{
 See \url{https://github.com/vnijs/gitgadget} for additional documentation
 }
-

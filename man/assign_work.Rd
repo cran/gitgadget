@@ -4,13 +4,11 @@
 \alias{assign_work}
 \title{Assign work to each student/team by creating a fork of the main repo}
 \usage{
-assign_work(username, password, groupname, assignment, userfile,
-  type = "individual", pre = "", server = "https://gitlab.com/api/v3/")
+assign_work(token, groupname, assignment, userfile, type = "individual",
+  pre = "", server = "https://gitlab.com/api/v4/")
 }
 \arguments{
-\item{username}{Gitlab username}
-
-\item{password}{Gitlab password}
+\item{token}{GitLab token}
 
 \item{groupname}{Group to create on gitlab (defaults to user's namespace)}
 
@@ -30,4 +28,3 @@ Assign work to each student/team by creating a fork of the main repo
 \details{
 See \url{https://github.com/vnijs/gitgadget} for additional documentation
 }
-

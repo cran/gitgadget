@@ -6,7 +6,10 @@
 \alias{gitgadget-package}
 \title{gitgadget}
 \usage{
-gitgadget()
+gitgadget(port = get_port())
+}
+\arguments{
+\item{port}{Port to use for the app}
 }
 \description{
 gitgadget
@@ -16,4 +19,3 @@ Launch gitgadget in Rstudio viewer if available
 \details{
 See \url{https://github.com/vnijs/gitgadget} for documentation
 }
-

@@ -4,13 +4,11 @@
 \alias{create_group}
 \title{Create a group on gitlab using the API}
 \usage{
-create_group(username, password, groupname = "", userfile = "",
-  permission = 20, server = "https://gitlab.com/api/v3/")
+create_group(token, groupname = "", userfile = "", permission = 20,
+  server = "https://gitlab.com/api/v4/")
 }
 \arguments{
-\item{username}{Gitlab username}
-
-\item{password}{Gitlab password}
+\item{token}{GitLab token}
 
 \item{groupname}{Group to create on gitlab (defaults to user's namespace)}
 
@@ -24,6 +22,5 @@ create_group(username, password, groupname = "", userfile = "",
 Create a group on gitlab using the API
 }
 \details{
-See \url{https://github.com/vnijs/gitgadget} for documentation
+See \url{https://github.com/vnijs/gitgadget} for additional documentation
 }
-

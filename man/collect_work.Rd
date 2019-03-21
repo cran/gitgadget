@@ -4,23 +4,17 @@
 \alias{collect_work}
 \title{Create merge requests for each student/team}
 \usage{
-collect_work(username, password, groupname, assignment, userfile,
-  type = "individual", pre = "", server = "https://gitlab.com/api/v3/")
+collect_work(token, assignment, userfile, type = "individual",
+  server = "https://gitlab.com/api/v4/")
 }
 \arguments{
-\item{username}{Gitlab username}
+\item{token}{GitLab token}
 
-\item{password}{Gitlab password}
-
-\item{groupname}{Group containing the assignment}
-
-\item{assignment}{Name of the assigment. file.path(directory, assignment) should exist}
+\item{assignment}{Name of the assigment (e.g., "class345/class345-assignment1")}
 
 \item{userfile}{A csv file with student information (i.e., username and token)}
 
 \item{type}{Individual or Team work}
-
-\item{pre}{Pre-amble for the assignment name, usually groupname + "-"}
 
 \item{server}{The gitlab API server}
 }
@@ -30,4 +24,3 @@ Create merge requests for each student/team
 \details{
 See \url{https://github.com/vnijs/gitgadget} for additional documentation
 }
-
