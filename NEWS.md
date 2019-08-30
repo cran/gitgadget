@@ -1,6 +1,12 @@
-# gitgadget 0.4.0.0
+# gitgadget 0.4.4.0
+
+* `.gitignore` file was not picked up if it already existed. Fixed in this release
+* Fix for generating ssh key with alternative name when .ssh/config does not yet exist 
+
+# gitgadget 0.4.2.0
 
 * Enhancement for initial setup with SSH
+* Add .gitlab-ci.yml to avoid warning emails about CI pipelines
 
 # gitgadget 0.3.3.0
 

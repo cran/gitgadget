@@ -7,12 +7,13 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta name="author" content="Vincent Nijs" />
 
-<meta name="date" content="2019-03-20" />
+<meta name="date" content="2019-08-29" />
 
 <title>Using Git Gadget</title>
 
@@ -96,7 +97,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -291,6 +292,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -299,17 +303,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Using Git Gadget</h1>
-<h4 class="author"><em>Vincent Nijs</em></h4>
-<h4 class="date"><em>2019-03-20</em></h4>
+<h4 class="author">Vincent Nijs</h4>
+<h4 class="date">2019-08-29</h4>
 
 
 
 <div id="git-gadget" class="section level1">
 <h1>Git Gadget</h1>
 <p><a href="https://travis-ci.org/vnijs/gitgadget"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAAAUCAYAAAAN+ioeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAABQBJREFUWIXdmH1ME2cAxp/76FF6DBhYIESgbHNJFRlMqIAIcWMjbhNs1pj0Dwgmi+jm4j70Dz/mHKvZnBl1cYBLE9YYCJNNggs6s/hFNGBjthCJHyPqFkFCVAKDtZSud+/+YDto7cdJmVSf5E3vvd/d0+d9cndpjzIYDJEcx5kVCoURQDTCQH++c36+I8yNXDQhg/wV+8h4IctxnJll2WpCyHzHkhROWUKSQqCQNpahIlEXWIZhjOG2sHDLE6qoJMcSlhASFo+LmXrSiiacm2LDcVHhmClU0YQQ+BtNTU1+mdwRyGMu/B+XEbBoALMybW5uluUxW///e3QU3J5zz6CPjmDcl4qLi5GcnCzLwxebzXfOpXL3L4A6XzmnnkGvaKPRCKvVCpPJBLVaLbGWlhaPY2fOOzs7fV61arUaJpMJVqsVRqPRgwUaJwoHsF6zHW35fTjwQgcSI1Ie4McL+9GY04Xs2CJpf0H8ajS8eBrHCm7BmnsRpYlGWezStvse3saULfg+7xoO515CztOrJJYUkYqvso6jLb8P6zXbcaJwwO8aghZtt9uh1+ths9lQUVHh97afOfe3XVlZie7ubuj1ejidTtlFA4BjZBKldYvR3XcOGzR7PPiyffHQfZGAPR2bUa2pkfZveXY/PvtpK1aaU/FW0xt4js2Wxbzzi+M0VtctwZendmKD5hOJVWtqcP76KZTWLYZz1B1wPUGLPnr0KHieR1tbG7RabUhFa7VatLe3g+d5tLa2PlTRLdfqEZExiZabX2NpTJ7EsmOL8MPmC+jeOohDhh+xkE+X2LHLzfiwZC92GfdBm/U89p7dIot55z/ca4Zy6d+wuU4iWaWR2JIYHVpvTuVqvnowtKJVKpXH539MFEVQFAVCCBQKhayiA/kFyxGZwAA0QWQCA0Kmz/tgUS0OnvkUheYUrKxNAU0xEmu48jG2tVfhRn8fKtO3wfT6IVnMOzOd6AZoAjZWBE3R04wAyqTpXCEVvWbNGiiVSpSXl6Onp0dig4OD0Ol04DgOZWVlsoru6enx8HuYog2pGxFJ81iX9jZ+7e+SGAclhBg7EnJ4vG/Y7eG54xUzotM5tP/eCPPZj7AsZpUs5p0f1L9Z4LWeOza8mVKNSJqHIW1TaEWLogiLxYKMjAw0NDRIrK6uDlVVVbBYLJiYmJBVdH19PTIzM2GxWOB2B36meecgDhpHVvQi66kimG07JFZ7bidq8hrxbV4XhoeHPTwv3/oFn+d8h5/X/YFdrx5Azcl3ZTF/+b3n5os7kBtTgiMresE5VXC47H7XQOn1er+/pYaGhsDzPBwOB1iWRWxsLBhm6haZnJzE2NgYRFFEVFQUxsfHkZSUJJ3na1sQBIyOjsLtdkOlUsFut0tsprzf3p1++R7yrXGYGBLARlKIWsSCiaCmctwTYb8tABSgTKQxMSAgfjkHAHDeFTExKEB0ETBKCqqFDLg4Oigbtrkkj5nb3nPBSTB+ww3apUBF8UasTH4NW38r89kltXbt2rD7v+td9JmS+3jp1IJ5ShNYZ0ruQyQCbo1ex+6TmzCkvurzuMfiXUemKRrxyxXzlCawMk3RAAWwKgr8MwxYQvk8jiWE/AUg6tHGCyzvouN07AP7wkVxOtZj7isn7WIJS9N0syAI1Y8qmByFa6mzFXs3ppceGRl5j2GYbyiKGpvvQE+aaBdLIu4suEzuiUX/AG3EJVuesFjhAAAAAElFTkSuQmCC" alt="Build Status" /></a></p>
-<p><code>gitgadget</code> is an R-studio addin for version control and assignment management using git. The assignment management functions currently support the <a href="https://gitlab.com">GitLab</a> API. PRs for use with GitHub are welcome.</p>
+<p><code>gitgadget</code> is an R-studio addin for version control and assignment management using git. The assignment management functions currently support the <a href="https://gitlab.com">GitLab</a> API. PRs for use with GitHub are welcome. For alternative that uses GitHub see <a href="https://github.com/rundel/ghclass" class="uri">https://github.com/rundel/ghclass</a> although this does not (currently) have a shiny user interface.</p>
 <p><code>gitgadget</code> is not intended as a tool for all-things-git. For that you need something like <a href="http://www.sourcetreeapp.com/" target="_blank">sourcetree</a>. <code>gitgadget</code> provide a few additional features not (yet) available in R-studio that can be useful to students and faculty using git for classes. For an excellent discussion of this level of functionality see <a href="http://happygitwithr.com/">happy git with R</a> by Jenny Bryan.</p>
-<p><code>gitgadget</code> requires Rstudio version 1.1 or later. Please use the <a href="https://github.com/vnijs/gitgadget/issues">issue tracker</a> on GitHub to suggest enhancements or report problems. To install the latest version of <code>gitgadget</code> use the command below:</p>
+<p><code>gitgadget</code> requires Rstudio version 1.2 or later. Please use the <a href="https://github.com/vnijs/gitgadget/issues">issue tracker</a> on GitHub to suggest enhancements or report problems. To install the latest version of <code>gitgadget</code> use the command below:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;gitgadget&quot;</span>, <span class="dt">repos =</span> <span class="st">&quot;https://radiant-rstats.github.io/minicran/&quot;</span>)</a></code></pre></div>
 <p>To start <code>gitgadget</code> click on the Addins menu in Rstudio and then on <code>gitgadget</code>.</p>
 <blockquote>
@@ -320,6 +324,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>To start using git and <code>gitgadget</code> first <a href="http://happygitwithr.com/hello-git.html">introduce yourself to git</a>. Set a global user name and email for git (e.g., your GitLab user name and email). By default, <code>gitgadget</code> will try to turn on credential helpers for your platform. See <a href="http://happygitwithr.com/credential-caching.html">http://happygitwithr.com/credential-caching.html</a> for additional information.</p>
 <p>To create and fork repos and collect merge requests you will need to provide a GitLab personal access token. First create the token on GitLab (<a href="https://gitlab.com/profile/personal_access_tokens" class="uri">https://gitlab.com/profile/personal_access_tokens</a>) and then copy-and-paste it in the <code>Token</code> input.</p>
 <p>Unless you plan to use <code>gitgadget</code> to manage student assignments, use <code>student</code> as the <code>User type</code>. Finally, enter the main directory where you plan to clone code repos (e.g., “C:/Users/me/GitLab”)</p>
+<p>If you want to use an SSH key, make sure to click on the <code>Introduce</code> button first, restart Rstudio, and then click on the <code>SSH key</code> button. Copy the key shown in GitGadget to the gitlab.com page that should have opened in your default browser. To securely connect to gitlab from your computer you will need to restart Rstudio and use <code>git clone git@some-private-repo</code> from a terminal in Rstudio the first time you clone a repo. After that, cloning, creating, etc. from GitGadget should work smoothly. See the video below for a demonstration.</p>
+<iframe width="806" height="504" src="https://www.youtube.com/embed/FQx_3EDQaXc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<blockquote>
+<p>Note: In the video we use a docker container (see <a href="https://github.com/radiant-rstats/docker/tree/master/install" class="uri">https://github.com/radiant-rstats/docker/tree/master/install</a>) but this is not required</p>
+</blockquote>
 </div>
 <div id="create-gitlab-only" class="section level2">
 <h2>Create (GitLab only)</h2>
@@ -331,6 +341,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Clone a repo from GitLab (or GitHub) (e.g., <code>git@gitlab.com:username/test-repo.git</code>). The name for the directory placed inside <code>Base directory to clone repo into</code> will be taken from the repo name unless a <code>Custom directory to clone repo into</code> is provided. If there is no R-studio project file (<code>.Rproj</code>) in the repo, one will be created.</p>
 <blockquote>
 <p>To activate an HTTPS credential helper the first time you clone a repo from GitHub or GitLab you will be asked to provide your username and password in the Rstudio terminal</p>
+</blockquote>
+<blockquote>
+<p>To use an SSH key with GitGadget you should clone from a terminal the first time. See the video linked above for a demo</p>
 </blockquote>
 </div>
 <div id="branch" class="section level2">
@@ -399,7 +412,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 <div id="initial-settings" class="section level2">
 <h2>Initial settings</h2>
-<p>Gitgadget supports the following input from an .Renviron file in your home directory (e.g., “C:/Users/username/.Renviron”). The easiest way to edit <code>.Renviron</code> is to use <code>usethis::edit_r_environ()</code> in Rstudio.</p>
+<p>GitGadget supports the following input from an .Renviron file in your home directory (e.g., “C:/Users/username/.Renviron”). The easiest way to edit <code>.Renviron</code> is to use <code>usethis::edit_r_environ()</code> in Rstudio.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">git.user</span> = <span class="st">&quot;your-gitlab-id&quot;</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="ex">git.email</span> = <span class="st">&quot;yourgitlabemail@gmail.com&quot;</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="ex">git.token</span> = <span class="st">&quot;abc123&quot;</span></a>
@@ -412,6 +425,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

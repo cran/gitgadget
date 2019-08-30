@@ -325,16 +325,18 @@ gitgadget <- function(port = get_port()) {
         resp <- system(cmd, intern = TRUE)
         cat("Used:", cmd, "\n")
 
+        ## based on https://twitter.com/joshua_ulrich/status/1115578106105028610
+        ## avoid "a ton of confusing merge commits on master"
+        # system("git config --global branch.autosetuprebase always")
+
         renvir <- file.path(renvirdir, ".Renviron")
         if (file.exists(renvir)) {
           readLines(renvir) %>%
-            .[!grepl("git.user\\s*=",.)] %>%
+            .[!grepl("git.user\\s*=", .)] %>%
             paste0(collapse = "\n") %>%
-            # paste0(., "\noptions(git.user = \"", input$intro_user_name, "\")\n") %>%
             paste0(., "\ngit.user = \"", input$intro_user_name, "\"\n") %>%
             cat(file = renvir)
         } else {
-          # paste0("options(git.user = \"", input$intro_user_name, "\")\n") %>% cat(file = renvir)
           paste0("git.user = \"", input$intro_user_name, "\"\n") %>% cat(file = renvir)
         }
       }
@@ -481,8 +483,7 @@ gitgadget <- function(port = get_port()) {
 
           key <- suppressWarnings(readLines(paste0(ssh_dir, "/", keyname, ".pub")))
 
-          if (os_type == "Darwin") {ls
-
+          if (os_type == "Darwin") {
             out <- pipe("pbcopy")
             cat(key, file = out)
             close(out)
@@ -523,6 +524,7 @@ gitgadget <- function(port = get_port()) {
           cat("\nYou will also need to add the lines below to ~/.ssh/config\n")
           cat("\nHost gitlab.com\n")
           cat(paste0("    IdentityFile ~/.ssh/", keyname))
+          cat("", file = "~/.ssh/config", append = TRUE)
           rstudioapi::navigateToFile("~/.ssh/config", line = 1000L)
         }
 
@@ -556,8 +558,9 @@ gitgadget <- function(port = get_port()) {
     observeEvent(input$intro_restart, {
       ## https://github.com/rstudio/rstudioapi/issues/111
       stopApp(cat("\nUse Session > Restart R to update your settings in memory.\nThen start Git Gadget again to clone, create, etc.\n\n"))
+      ## Below is still not the same as using Session > Restart R
+      # stopApp(cat("\nAfter restarting Git Gadget your settings will have been updated\nand Git Gadget will be ready to clone, create, etc. repos\n\n"))
       # cmd <- "gitgadget:::gitgadget()"
-      # ret <- .rs.restartR(cmd)
       # rstudioapi::restartSession(cmd)
     })
 
@@ -956,9 +959,9 @@ gitgadget <- function(port = get_port()) {
               cat(file = file.path(dir, paste0(basename(dir),".Rproj")))
           }
 
-          gitignore <- list.files(path = dir, pattern = ".gitignore")
+          gitignore <- list.files(path = dir, all.files = TRUE, pattern = ".gitignore")
           if (length(gitignore) == 0)
-            cat(".Rproj.user\n.Rhistory\n.RData\n.Ruserdata\n.DS_Store\n", file = file.path(dir, ".gitignore"))
+            cat(".Rproj.user\n.Rhistory\n.RData\n.Ruserdata\n.DS_Store\n.ipynb_checkpoints\n", file = file.path(dir, ".gitignore"))
 
           cat("Repo was sucessfully cloned into", dir)
 
