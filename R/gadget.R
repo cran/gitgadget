@@ -131,7 +131,7 @@ gitgadget <- function(port = get_port()) {
           ),
           conditionalPanel("input.create_remote == 'GitLab'",
             fillRow(height = "70px", width = "300px",
-              textInput("create_group","Group name:", value = Sys.getenv("git.group")),
+              textInput("create_group", "Group name:", value = Sys.getenv("git.group")),
               uiOutput("ui_create_pre")
             )
           ),
@@ -144,7 +144,11 @@ gitgadget <- function(port = get_port()) {
                 uiOutput("ui_create_user_file"),
                 shinyFiles::shinyFilesButton("create_file_find", "Open", multiple = FALSE, title = "Browse and select a CSV file with student id and token information. Used for assignment management by instructors")
             ),
-            conditionalPanel("input.create_user_file != ''",
+            fillRow(height = "70px", width = "475px",
+                uiOutput("ui_create_ta_file"),
+                shinyFiles::shinyFilesButton("create_tafile_find", "Open", multiple = FALSE, title = "Browse and select a CSV file with TA id and token information. Used for assignment management by instructors", style = "margin-top: 25px;")
+            ),
+            conditionalPanel("input.intro_user_type == 'faculty' && input.create_user_file != ''",
               actionButton("create_check_tokens", "Check tokens", title = "Check student token information on GitLab"),
               radioButtons("create_type", "Assignment type:", c("individual","team"), "individual", inline = TRUE)
             )
@@ -153,7 +157,7 @@ gitgadget <- function(port = get_port()) {
           actionButton("remove_remote_show", "Remove remote", title = "Remove remote repo if present", class = "btn-danger"),
           actionButton("remove_git_show", "Remove .git", title = "Remove local .git directory if present", class = "btn-danger"),
           HTML("<h4>Create local .git and remote repo</h4>"),
-          actionButton("create", "Create", title = "Create a new repo using the gitlab API"),
+          uiOutput("ui_create_buttons"),
           hr(),
           verbatimTextOutput("create_output")
         )
@@ -235,10 +239,21 @@ gitgadget <- function(port = get_port()) {
                 uiOutput("ui_collect_user_file"),
                 shinyFiles::shinyFilesButton("collect_file_find", "Open", multiple = FALSE, title = "Browse and select a CSV file with student id and token information. Used for assignment management by instructors")
               ),
+              fillRow(height = "70px", width = "475px",
+                uiOutput("ui_collect_ta_file"),
+                shinyFiles::shinyFilesButton("collect_tafile_find", "Open", multiple = FALSE, title = "Browse and select a CSV file with TA id and token information. Used for assignment management by instructors", style = "margin-top: 25px;")
+              ),
+
+              conditionalPanel("input.intro_user_type == 'faculty' && input.collect_ta_file != ''",
+                actionButton("collect_hide_from_ta", "Hide", title = "Hide student forks from TA", class = "btn-warning"),
+                actionButton("collect_show_to_ta", "Show", title = "Show student forks to TA", class = "btn-success")
+              ),
               textInput("collect_server","API server:", value = Sys.getenv("git.server", "https://gitlab.com/api/v4/")),
               radioButtons("collect_type", "Assignment type:", c("individual","team"), "individual", inline = TRUE),
               actionButton("collect", "Collect", title = "Create merge requests from all student forks using the gitlab API. Used for assignment management by instructors"),
-              actionButton("collect_fetch", "Fetch", title = "Create local branches from all merge requests and link them to (new) remote branches. Used for assignment management by instructors")
+              actionButton("collect_fetch", "Fetch", title = "Create local branches from all merge requests and link them to (new) remote branches. Used for assignment management by instructors"),
+              actionButton("collect_hide_repo", "Hide", title = "Hide class repo from students", class = "btn-warning"),
+              actionButton("collect_show_repo", "Show", title = "Show class repo to students", class = "btn-success")
             ),
             hr(),
             verbatimTextOutput("collect_output")
@@ -331,7 +346,7 @@ gitgadget <- function(port = get_port()) {
 
         renvir <- file.path(renvirdir, ".Renviron")
         if (file.exists(renvir)) {
-          readLines(renvir) %>%
+          readLines(renvir, warn = FALSE) %>%
             .[!grepl("git.user\\s*=", .)] %>%
             paste0(collapse = "\n") %>%
             paste0(., "\ngit.user = \"", input$intro_user_name, "\"\n") %>%
@@ -348,7 +363,7 @@ gitgadget <- function(port = get_port()) {
 
         renvir <- file.path(renvirdir, ".Renviron")
         if (file.exists(renvir)) {
-          readLines(renvir) %>%
+          readLines(renvir, warn = FALSE) %>%
             .[!grepl("git.email\\s*=",.)] %>%
             paste0(collapse = "\n") %>%
             paste0(., "\ngit.email = \"", input$intro_user_email, "\"\n") %>%
@@ -361,7 +376,7 @@ gitgadget <- function(port = get_port()) {
       if (!is_empty(input$intro_token_gl)) {
         renvir <- file.path(renvirdir, ".Renviron")
         if (file.exists(renvir)) {
-          readLines(renvir) %>%
+          readLines(renvir, warn = FALSE) %>%
             .[!grepl("git.token\\s*=",.)] %>%
             paste0(collapse = "\n") %>%
             paste0(., "\ngit.token = \"", input$intro_token_gl, "\"\n") %>%
@@ -372,7 +387,7 @@ gitgadget <- function(port = get_port()) {
       if (!is_empty(input$intro_token_gh)) {
         renvir <- file.path(renvirdir, ".Renviron")
         if (file.exists(renvir)) {
-          readLines(renvir) %>%
+          readLines(renvir, warn = FALSE) %>%
             .[!grepl("GITHUB_PAT\\s*=",.)] %>%
             paste0(collapse = "\n") %>%
             paste0(., "\nGITHUB_PAT = \"", input$intro_token_gh, "\"\n") %>%
@@ -386,7 +401,7 @@ gitgadget <- function(port = get_port()) {
         if (!dir.exists(git_home)) dir.create(git_home, recursive = TRUE)
         renvir <- file.path(renvirdir, ".Renviron")
         if (file.exists(renvir)) {
-          readLines(renvir) %>%
+          readLines(renvir, warn = FALSE) %>%
             .[!grepl("git.home\\s*=",.)] %>%
             paste0(collapse = "\n") %>%
             paste0(., "\ngit.home = \"", git_home, "\"\n") %>%
@@ -403,7 +418,7 @@ gitgadget <- function(port = get_port()) {
         # renvir <- file.path(renvirdir, ".Rprofile")
         renvir <- file.path(renvirdir, ".Renviron")
         if (file.exists(renvir)) {
-          readLines(renvir) %>%
+          readLines(renvir, warn = FALSE) %>%
             # .[!grepl("options\\(git.user.type\\s*=",.)] %>%
             .[!grepl("git.user.type\\s*=",.)] %>%
             paste0(collapse = "\n") %>%
@@ -457,7 +472,8 @@ gitgadget <- function(port = get_port()) {
         ),
         actionButton("intro_git", "Introduce", title = "Introduce yourself to git\n\nGit commands:\ngit config --global --replace-all user.name <username>\ngit config --global --replace-all user.email <useremail>\ngit config --global credential.helper <credential helper>"),
         actionButton("intro_ssh", "SSH key", title = "Create an SSH key and copy the public-key to the clipboard"),
-        actionButton("intro_restart", "Restart", title = "Restart GitGadget")
+        actionButton("intro_restart", "Restart", title = "Restart GitGadget"),
+        actionButton("intro_check", "Check", title = "Check settings")
       )
 
      # actionButton("intro_git", "Introduce", title = "Introduce yourself to git\n\nGit commands:\ngit config --global --replace-all user.name <username>\ngit config --global --replace-all user.email <useremail>\ngit config --global credential.helper <credential helper>")
@@ -481,7 +497,7 @@ gitgadget <- function(port = get_port()) {
           paste0("ssh-keygen -t rsa -b 4096 -C \"", email, "\" -f ", ssh_dir, "/", keyname," -N '", input$intro_passphrase, "'") %>%
            system(.)
 
-          key <- suppressWarnings(readLines(paste0(ssh_dir, "/", keyname, ".pub")))
+          key <- readLines(paste0(ssh_dir, "/", keyname, ".pub"), warn = FALSE)
 
           if (os_type == "Darwin") {
             out <- pipe("pbcopy")
@@ -493,7 +509,7 @@ gitgadget <- function(port = get_port()) {
             cat("\n\nCopy the new public SSH key to https://gitlab.com/profile/keys. Paste the key into the 'Key' text input on gitlab, and click 'Add key'\n")
           }
         } else {
-          key <- suppressWarnings(readLines(.ssh_exists()))
+          key <- readLines(.ssh_exists(), warn = FALSE)
           if (os_type == "Darwin") {
             out <- pipe("pbcopy")
             cat(key, file = out)
@@ -509,10 +525,10 @@ gitgadget <- function(port = get_port()) {
         Sys.setenv(GIT_SSH_COMMAND=paste0("'ssh -i '", ssh_dir, "/", keyname))
 
         if (file.exists(file.path(ssh_dir, "known_hosts"))) {
-          if (!any(grepl("gitlab\\.com", readLines(file.path(ssh_dir, "known_hosts"))))) {
+          if (!any(grepl("gitlab\\.com", readLines(file.path(ssh_dir, "known_hosts"), warn = FALSE)))) {
             system(paste0("ssh-keyscan -t rsa,dsa gitlab.com >> ", ssh_dir, "/known_hosts"))
           }
-          if (!any(grepl("github\\.com", readLines(file.path(ssh_dir, "known_hosts"))))) {
+          if (!any(grepl("github\\.com", readLines(file.path(ssh_dir, "known_hosts"), warn = FALSE)))) {
             system(paste0("ssh-keyscan -t rsa,dsa github.com >> ", ssh_dir, "/known_hosts"))
           }
         } else {
@@ -528,31 +544,30 @@ gitgadget <- function(port = get_port()) {
           rstudioapi::navigateToFile("~/.ssh/config", line = 1000L)
         }
 
-        browseURL("https://gitlab.com/profile/keys")
-        # browseURL("https://github.com/settings/keys")
 
-      # } else if (os_type == "Windows") {
       } else {
         if (!is_empty(.ssh_exists())) {
           ssh_dir <- file.path(homedir, ".ssh")
           if (file.exists(file.path(ssh_dir, "known_hosts"))) {
-            if (!any(grepl("gitlab\\.com", readLines(file.path(ssh_dir, "known_hosts"))))) {
+            if (!any(grepl("gitlab\\.com", readLines(file.path(ssh_dir, "known_hosts"), warn = FALSE)))) {
               system(paste0("ssh-keyscan -t rsa,dsa gitlab.com >> ", ssh_dir, "/known_hosts"))
             }
-            if (!any(grepl("github\\.com", readLines(file.path(ssh_dir, "known_hosts"))))) {
+            if (!any(grepl("github\\.com", readLines(file.path(ssh_dir, "known_hosts"), warn = FALSE)))) {
               system(paste0("ssh-keyscan -t rsa,dsa github.com >> ", ssh_dir, "/known_hosts"))
             }
           } else {
             system(paste0("ssh-keyscan -t rsa,dsa gitlab.com >> ", ssh_dir, "/known_hosts"))
             system(paste0("ssh-keyscan -t rsa,dsa github.com >> ", ssh_dir, "/known_hosts"))
           }
-          key <- suppressWarnings(readLines(.ssh_exists()))
+          key <- readLines(.ssh_exists(), warn = FALSE)
           cat(key, file = "clipboard")
           cat("\nYour public SSH key has been copied to the clipboard. Navigate to https://gitlab.com/profile/keys in your browser, paste the key into the 'Key' text input on gitlab, and click 'Add key'\n")
        } else {
           cat("\nSSH keys cannot be generated from Git Gadget on Windows. In RStudio go to Tools > Global Options and select Git/SVN. Click 'Create RSA Key' and then 'View public key'. Copy the key to the clipboard, navigate to https://gitlab.com/profile/keys in your browser, paste the key into the 'Key' text input on gitlab, and click 'Add key'\n")
         }
       }
+      browseURL("https://gitlab.com/profile/keys")
+      # browseURL("https://github.com/settings/keys")
     })
 
     observeEvent(input$intro_restart, {
@@ -564,9 +579,14 @@ gitgadget <- function(port = get_port()) {
       # rstudioapi::restartSession(cmd)
     })
 
+    observeEvent(input$intro_check, {
+      usethis::edit_r_environ()
+      usethis::edit_r_profile()
+    })
+
     output$introduce_output <- renderPrint({
       input$intro_git
-      if (file.exists(file.path(find_home(), ".gitconfig"))) {
+      if (file.exists(file.path(find_home(), ".gitconfig")) || file.exists(file.path(find_home(), "Documents/.gitconfig"))) {
         ret <- system("git config --global --list", intern = TRUE) %>%
           .[grepl("^user",.)]
       } else {
@@ -664,10 +684,48 @@ gitgadget <- function(port = get_port()) {
       textInput("create_user_file","Upload file with student tokens:", value = init, placeholder = "Open student CSV file")
     })
 
+    create_ta_uploadfile <- shinyFiles::shinyFileChoose(
+      input = input,
+      id = "create_tafile_find",
+      roots = gg_volumes,
+      session = session,
+      filetype = "csv"
+    )
+
+    output$ui_create_ta_file <- renderUI({
+      init <- Sys.getenv("git.tafile")
+      if (!is.integer(input$create_tafile_find)) {
+        chosen <- shinyFiles::parseFilePaths(gg_volumes, input$create_tafile_find)
+        if (nrow(chosen) > 0) {
+          init <- chosen$datapath
+        }
+      }
+      textInput("create_ta_file","Upload file with TA tokens:", value = init, placeholder = "Open TA CSV file")
+    })
+
+    output$ui_create_buttons <- renderUI({
+      if (input$intro_user_type == "faculty" && !is_empty(input$create_user_file)) {
+        tagList(
+          actionButton("create", "Create", title = "Create a new repo using the gitlab API"),
+          actionButton("create_hide_repo", "Hide", title = "Hide class repo from students", class = "btn-warning"),
+          actionButton("create_show_repo", "Show", title = "Show class repo to students", class = "btn-success")
+        )
+      } else {
+        actionButton("create", "Create", title = "Create a new repo using the gitlab API")
+      }
+    })
+
     observeEvent(input$create_check_tokens, {
-      withProgress(message = "Checking student tokens on GitLab", value = 0, style = "old", {
-        check_tokens(input$create_user_file)
-      })
+      if (!is_empty(input$create_user_file)) {
+        withProgress(message = "Checking student tokens on GitLab", value = 0, style = "old", {
+          check_tokens(input$create_user_file)
+        })
+      }
+      if (!is_empty(input$create_ta_file)) {
+        withProgress(message = "Checking TA tokens on GitLab", value = 0, style = "old", {
+          check_tokens(input$create_ta_file)
+        })
+      }
       message("\nToken check completed. Check the console for messages\n")
     })
 
@@ -712,7 +770,7 @@ gitgadget <- function(port = get_port()) {
               with(tags, table(
                 align = "right",
                 td(modalButton("Cancel")),
-                td(conditionalPanel("input.create_user_file != ''",
+                td(conditionalPanel("input.intro_user_type == 'faculty' && input.create_user_file != ''",
                   actionButton("remove_forks", "Remove forks", title = "Remove forks from current repo created for students", class = "btn-danger")
                 )),
                 td(actionButton("remove_gitlab", "Remove remote", title = "Remove previous remote repo if present", class = "btn-danger"))
@@ -842,7 +900,7 @@ gitgadget <- function(port = get_port()) {
             cat("Creating group ...\n")
             create_group(
               input$create_token, create_group_lc, input$create_user_file,
-              permission = 20, server = input$create_server
+              permission = 0, server = input$create_server
             )
           }
 
@@ -859,7 +917,9 @@ gitgadget <- function(port = get_port()) {
               cat("Assigning work ...\n")
               assign_work(
                 input$create_token, create_group_lc, repo,
-                input$create_user_file, type = input$create_type, pre = create_pre_lc,
+                input$create_user_file,
+                tafile = input$create_ta_file,
+                type = input$create_type, pre = create_pre_lc,
                 server = input$create_server
               )
             }
@@ -903,18 +963,32 @@ gitgadget <- function(port = get_port()) {
         cat("Used:", cmdclean, "\n\n")
 
         withProgress(message = "Cloning repo", value = 0, style = "old", {
-          ret <- suppressWarnings(system(paste(cmd, "2>&1"), intern = TRUE))
+          if (os_type == "Windows") {
+            ret <- suppressWarnings(system(cmd, intern = TRUE))
+          } else {
+            ret <- suppressWarnings(system(paste(cmd, "2>&1"), intern = TRUE))
+          }
           if (any(grepl("rpostback-askpass", ret)) || any(grepl("could not read Username", ret))) {
             rstudioapi::terminalActivate()
-            Sys.sleep(1)
-            tid <- rstudioapi::terminalVisible()
-            rstudioapi::terminalSend(tid, paste("git clone", clone_from, clone_to, "\n"))
-            showModal(
-              modalDialog(
-                title = "Provide user name and password",
-                span("Provide user name and password in Rstudio > Terminal to clone from GitLab (GitHub)")
+            tid <- c()
+            slp <- 1
+            while (length(tid) == 0) {
+              Sys.sleep(1)
+              tid <- rstudioapi::terminalVisible()
+              if  (slp > 10) break
+              slp <- slp + 1
+            }
+            if (slp > 10) {
+              cat("\nUnable to send commands to terminal. Please try again\n")
+            } else {
+              rstudioapi::terminalSend(tid, paste("git clone", clone_from, clone_to, "\n"))
+              showModal(
+                modalDialog(
+                  title = "Provide user name and password",
+                  span("Provide user name and password in Rstudio > Terminal to clone from GitLab (GitHub)")
+                )
               )
-            )
+            }
           } else if (any(grepl("fatal:", ret))) {
             cat(ret, sep = "\n")
           } else {
@@ -1170,8 +1244,11 @@ gitgadget <- function(port = get_port()) {
     ## Show reset modal when button is clicked.
     observeEvent(input$sync_undo_commit_show, {
       ## See https://shiny.rstudio.com/reference/shiny/latest/modalDialog.html
+      commit_mess <- system("git log -1 --pretty=%B", intern = TRUE)
       showModal(
         modalDialog(title = "Undo latest local commit",
+          span(suppressWarnings(paste0("\"", commit_mess[1], "\""))),
+          br(), br(),
           span("Are you sure you want to undo the latest local commit? This will
                leave the latest changes un-staged (see Rstudio Git tab) so you can
                edit them or revert the changes"),
@@ -1271,27 +1348,6 @@ gitgadget <- function(port = get_port()) {
       remote_info()
     })
 
-    get_assignments <- eventReactive(input$collect_list, {
-
-      token <- input$collect_token
-      group <- input$collect_group
-      server <- input$collect_server
-      if (is_empty(token) || is_empty(server)) {
-        message("Please specify all required inputs to retrieve available assignments")
-        return(invisible())
-      }
-
-      proj <- get_allprojects(token, server = "https://gitlab.com/api/v4/", everything = TRUE)$repos
-      proj <- proj[proj$namespace$name == group,]
-
-      if (length(proj) == 0) {
-        message("No assignments found for specified groupname")
-        return(invisible())
-      } else {
-        proj[["name"]]
-      }
-    })
-
     output$ui_collect_assignment <- renderUI({
 
       resp <- assignment_name()
@@ -1323,6 +1379,28 @@ gitgadget <- function(port = get_port()) {
         }
       }
       textInput("collect_user_file", "Upload file with student tokens:", value = init, placeholder = "Open student CSV file")
+    })
+
+    collect_tafile_find <- shinyFiles::shinyFileChoose(
+      input = input,
+      id = "collect_tafile_find",
+      roots = gg_volumes,
+      session = session,
+      filetype = "csv"
+    )
+
+    ## https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/workflow/merge_requests.md#checkout-merge-requests-locally
+    ## setup a branch switcher so you can easily do "git checkout origin/merge-requests/1" for each PR
+    ## can you push back tot the PR as well?
+    output$ui_collect_ta_file <- renderUI({
+      init <- Sys.getenv("git.tafile")
+      if (!is.integer(input$collect_tafile_find)) {
+        chosen <- shinyFiles::parseFilePaths(gg_volumes, input$collect_tafile_find)
+        if (nrow(chosen) > 0) {
+          init <- chosen$datapath
+        }
+      }
+      textInput("collect_ta_file", "Upload file with TA tokens:", value = init, placeholder = "Open TA CSV file")
     })
 
     collect <- eventReactive(input$collect, {
@@ -1364,9 +1442,97 @@ gitgadget <- function(port = get_port()) {
       message("\nUse the Git tab in R-studio (click refresh first) to switch between different student assignment submissions\n")
     })
 
+    create_repo_name <- reactive({
+
+      repo <- basename(input$create_directory)
+
+      create_pre_lc <- tolower(input$create_pre)
+      if (!is_empty(create_pre_lc)) {
+        repo <- paste0(create_pre_lc, repo)
+      }
+
+      create_group_lc <- tolower(input$create_group)
+      if (!is_empty(create_group_lc) && create_group_lc != Sys.getenv("git.user")) {
+        repo <- paste0(create_group_lc, "/", repo)
+      }
+
+      repo
+
+    })
+
+    observeEvent(input$create_hide_repo, {
+      req(input$create_token, input$create_server, input$create_user_file)
+
+      withProgress(message = "Hiding class repo", value = 0, style = "old", {
+        repo <- create_repo_name()
+        remove_users_repo(input$create_token, repo, input$create_user_file, server = input$create_server)
+        cat("\nUser permissions removed ...\n\n")
+      })
+    })
+
+
+    observeEvent(input$create_show_repo, {
+      req(input$create_token, input$create_server, input$create_user_file)
+      withProgress(message = "Showing class repo", value = 0, style = "old", {
+        repo <- create_repo_name()
+        add_users_repo(input$create_token, repo, input$create_user_file, permission = 20, server = input$create_server)
+        cat("User permissions added ...\n")
+      })
+    })
+
+    observeEvent(input$collect_hide_repo, {
+      req(input$collect_token, input$collect_server, input$collect_user_file, input$collect_assignment)
+      withProgress(message = "Hiding class repo", value = 0, style = "old", {
+        remove_users_repo(input$collect_token, input$collect_assignment, input$collect_user_file, server = input$collect_server)
+        cat("\nUser permissions removed ...\n")
+      })
+    })
+
+    observeEvent(input$collect_show_repo, {
+      req(input$collect_token, input$collect_server, input$collect_user_file, input$collect_assignment)
+      withProgress(message = "Showing class repo", value = 0, style = "old", {
+        add_users_repo(input$collect_token, input$collect_assignment, input$collect_user_file, permission = 20, server = input$create_server)
+        cat("User permissions added ...\n\n")
+      })
+    })
+
+    observeEvent(input$collect_hide_from_ta, {
+      req(input$collect_token, input$collect_server, input$collect_user_file, input$collect_ta_file, input$collect_assignment)
+      withProgress(message = "Hiding student forks from TA", value = 0, style = "old", {
+        repo <- strsplit(input$collect_assignment, "/")[[1]] %>% {ifelse(length(.) > 1, .[2], .[1])}
+        students <- read.csv(input$collect_user_file, stringsAsFactors = FALSE)
+        if (input$collect_type == "team") {
+          students <- distinct(students, team, .keep_all = TRUE)
+        }
+        for (i in seq_len(nrow(students))) {
+          fork <- paste0(students[i, "userid"], "/", repo)
+          remove_users_repo(students[i, "token"], fork, input$collect_ta_file, server = input$collect_server)
+          message(paste0("Project fork ", fork, " hidden from TAs"))
+        }
+        cat("\nStudent forks hidden from TA ...\n")
+      })
+    })
+
+    observeEvent(input$collect_show_to_ta, {
+      req(input$collect_token, input$collect_server, input$collect_user_file, input$collect_ta_file, input$collect_assignment)
+      withProgress(message = "Showing student forks to TA", value = 0, style = "old", {
+        repo <- strsplit(input$collect_assignment, "/")[[1]] %>% {ifelse(length(.) > 1, .[2], .[1])}
+        students <- read.csv(input$collect_user_file, stringsAsFactors = FALSE)
+        if (input$collect_type == "team") {
+          students <- distinct(students, team, .keep_all = TRUE)
+        }
+        for (i in seq_len(nrow(students))) {
+          fork <- paste0(students[i, "userid"], "/", repo)
+          add_users_repo(students[i, "token"], fork, input$collect_ta_file, permission = 40, server = input$collect_server)
+          message(paste0("Project fork ", fork, " shown to TAs"))
+        }
+        cat("Student forks shown to TA ...\n\n")
+      })
+    })
+
     output$collect_output <- renderPrint({
       if (is_empty(input$collect_assignment) || is_empty(input$collect_user_file)) {
-       cat("Provide GitLab token and load the user file with GitLab tokens. You should be in the\nRstudio project used to create and for the assignment repo (i.e., check is the\nAssignment name shown is correct). Then press the Collect button to generate Merge\nRequests. Click the Fetch button to review the Merge Requests locally") } else {
+       cat("Provide GitLab token and load the user file with GitLab tokens. You should be in the\nRstudio project used to create the assignment repo or in a clone of that repo (i.e.,\ncheck if the Assignment name shown is correct). Then press the Collect button to generate\nMerge Requests. Click the Fetch button to review the Merge Requests locally as branches") } else {
         if (pressed(input$collect))
           ret <- collect()
         if (pressed(input$collect_fetch)) {
