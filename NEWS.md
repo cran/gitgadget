@@ -1,3 +1,22 @@
+# gitgadget 0.6.0
+
+* By default, Create and Collect now _Hide_ (i.e., remove permissions) to the main repo that was forked for each student
+* If it now possible to specify self-hosted gitlab server APIs to use with gitgadget
+
+# gitgadget 0.5.5.0
+
+* Fix for fork synch
+
+# gitgadget 0.5.4.0
+
+* Various updates to allow using gitgadget with shiny server
+
+# gitgadget 0.5.3.0
+
+* Warning if user tries to `create` a repo from the base git directory
+* Code base restructured
+* Added inst/app/app.R for use with shiny server
+
 # gitgadget 0.5.2.0
 
 * Set `warn = FALSE` for `readLines`
