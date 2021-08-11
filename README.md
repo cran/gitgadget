@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/vnijs/gitgadget.png?branch=master)](https://travis-ci.org/vnijs/gitgadget)
 
-`gitgadget` is an R-studio addin for version control and assignment management using git. The assignment management functions currently support the [GitLab](https://gitlab.com) API. PRs for use with GitHub are welcome. For alternative that uses GitHub see https://github.com/rundel/ghclass although this does not (currently) have a shiny user interface.
+`gitgadget` is an R-studio addin for version control and assignment management using git. The assignment management functions currently support the [GitLab](https://about.gitlab.com/) API. PRs for use with GitHub are welcome. For alternative that uses GitHub see https://github.com/rundel/ghclass although this does not (currently) have a shiny user interface.
 
-`gitgadget` is not intended as a tool for all-things-git. For that you need something like <a href="https://www.gitkraken.com" target="_blank">gitkraken</a>. `gitgadget` provides a few additional features not (yet) available in R-studio that can be useful to students and faculty using git for classes. For an excellent discussion of this level of functionality see [happy git with R](https://happygitwithr.com/) and [talk about version control](https://peerj.com/preprints/3159/) by Jenny Bryan and [git for humans](https://speakerdeck.com/alicebartlett/git-for-humans) by Alice Bartlett.
+`gitgadget` is not intended as a tool for all-things-git. For that you need something like <a href="https://www.gitkraken.com" target="_blank">gitkraken</a>. `gitgadget` provides a few additional features not (yet) available in R-studio that can be useful to students and faculty using git for classes. For an excellent discussion of this level of functionality see [happy git with R](https://happygitwithr.com/) and [talk about version control](https://peerj.com/preprints/3159/) by Jenny Bryan and [git for humans](https://speakerdeck.com/alicebartlett/git-for-humans/) by Alice Bartlett.
 
-`gitgadget` requires Rstudio version 1.2 or later. Please use the [issue tracker](https://github.com/vnijs/gitgadget/issues) on GitHub to suggest enhancements or report problems. To install the latest version of `gitgadget` use the command below:
+`gitgadget` requires Rstudio version 1.2 or later. Please use the [issue tracker](https://github.com/vnijs/gitgadget/issues/) on GitHub to suggest enhancements or report problems. To install the latest version of `gitgadget` use the command below:
 
 ```r
 install.packages("gitgadget", repos = "https://radiant-rstats.github.io/minicran/")
@@ -20,7 +20,7 @@ On macOS, you will you will need to run the command below from a terminal to get
 xcode-select --install;
 ```
 
-On Windows you will need to install git bash from https://git-scm.com/download/win. Alternatively, you can use the following installer that we use with our students to ensure git is setup correctly for use with gitgadget:
+On Windows you will need to install git bash from https://git-scm.com/download/win/. Alternatively, you can use the following installer that we use with our students to ensure git is setup correctly for use with gitgadget:
 
 https://rady.ucsd.edu/faculty/directory/vnijs/RSM-MSBA-Computing-Environment-Latest.exe
 
@@ -30,11 +30,11 @@ https://rady.ucsd.edu/faculty/directory/vnijs/RSM-MSBA-Computing-Environment-Lat
 
 To start using git and `gitgadget` first [introduce yourself to git](https://happygitwithr.com/hello-git.html). Set a global user name and email for git (e.g., your GitLab user name and email). By default, `gitgadget` will try to turn on an appropriate credential helper for your operating system. See [https://happygitwithr.com/credential-caching.html](https://happygitwithr.com/credential-caching.html) for additional information. 
 
-To create and fork repos and collect merge requests you will need to provide a GitLab personal access token. First create the [token on GitLab](https://gitlab.com/profile/personal_access_tokens) and then copy-and-paste it in the `Token` input.
+To create and fork repos and collect merge requests you will need to provide a GitLab personal access token. First create the [token on GitLab](https://gitlab.com/profile/personal_access_tokens/) and then copy-and-paste it in the `Token` input.
 
 Unless you plan to use `gitgadget` to manage student assignments, select `student` as the `User type`. Finally, enter the main directory where you plan to clone code repos (e.g., "C:/Users/me/git")
 
-If you want to use an SSH key, make sure to click on the `Introduce` button, restart Rstudio, and then click on the `SSH key` button. Copy the key shown in GitGadget to the [gitlab.com page](https://gitlab.com/profile/keys) that should have opened in your default browser. To securely connect to gitlab from your computer you will need to restart Rstudio and use `git clone git@some-private-repo` from a terminal in Rstudio the first time you clone a repo. After that, cloning, creating, etc. from GitGadget should work smoothly. See the videos below for a demonstration.
+If you want to use an SSH key, make sure to click on the `Introduce` button, restart Rstudio, and then click on the `SSH key` button. Copy the key shown in GitGadget to the [gitlab.com page](https://gitlab.com/profile/keys/) that should have opened in your default browser. To securely connect to gitlab from your computer you will need to restart Rstudio and use `git clone git@some-private-repo` from a terminal in Rstudio the first time you clone a repo. After that, cloning, creating, etc. from GitGadget should work smoothly. See the videos below for a demonstration.
 
 > Note: On Windows we recommend cloning and creating repos using HTTPS rather than SSH
 
@@ -54,7 +54,7 @@ https://youtu.be/elq5UUG0RbE
 
 https://youtu.be/uwqUHl3z37o
 
-> Note: In these videos we use a docker container (see https://github.com/radiant-rstats/docker/tree/master/install) but this is not required
+> Note: In these videos we use a docker container (see https://github.com/radiant-rstats/docker/tree/master/install/) but this is not required
 
 ## Create (GitLab only)
 
@@ -68,9 +68,9 @@ If a CSV file with TA information is specified they will be added as "Maintainer
 
 Clone a repo from GitLab (or GitHub) (e.g., `git@gitlab.com:username/test-repo.git`). The name for the directory placed inside `Base directory to clone repo into` will be taken from the repo name unless a `Custom directory to clone repo into` is provided. If there is no R-studio project file (`.Rproj`) in the remote repo, one will be created.
 
-> Note: To activate an HTTPS credential helper the first time you clone a repo from GitHub or GitLab you will be asked to provide your username and password in the Rstudio terminal
-
 > Note: To use an SSH key with GitGadget you should clone from a terminal the first time. See the video linked above (_Setup for git and gitlab_) for a demo. As mentioned above, for Windows users we recommend using HTTPS to clone and create repos.
+
+> Note: To activate an HTTPS credential helper the first time you clone a repo from GitHub or GitLab you will be asked to provide your username and password in the Rstudio terminal
 
 ## Branch
 
@@ -120,7 +120,9 @@ Forks the assignment repo uploaded by a faculty member or TA for each student/te
 | id2    | team1 | student2@gmail.com | n9....... |
 | id3    | team2 | student3@gmail.com | VR....... |
 
-Note: Markdown for the table above was generated using <a href="https://www.tablesgenerator.com/markdown_tables" target="_blank">tablegenerator.com</a>
+<!-- 
+Note: Markdown for the table above was generated using <a href="https://www.tablesgenerator.com/markdown_tables" target="_blank">tablegenerator.com</a> 
+-->
 
 `collect_work(...)`
 
