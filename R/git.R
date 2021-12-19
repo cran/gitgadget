@@ -9,7 +9,7 @@ checkerr <- function(code) floor(code / 100) == 2
 is_not <- function(x) length(x) == 0 || (length(x) == 1 && is.na(x))
 is_empty <- function(x, empty = "\\s*") {
   is_not(x) || (length(x) == 1 && grepl(paste0("^", empty, "$"), x))
-}
+  }
 pressed <- function(x) !is.null(x) && (is.list(x) || x > 0)
 not_pressed <- function(x) !pressed(x)
 
@@ -20,21 +20,34 @@ connect <- function(token = Sys.getenv("git.token"), server = "https://gitlab.co
     list(status = "OKAY", token = token)
   }
 }
-
+#' Reach user file
+#'
+#' @details See \url{https://github.com/vnijs/gitgadget} for additional documentation
+#'
+#' @param userfile File with student information
+#' @param cols Column names that must exists in the file
+#'
+#' @export
 read_ufile <- function(userfile, cols = c("userid", "team", "token")) {
-  users <- read.csv(userfile, stringsAsFactors = FALSE)
-  if (all(cols %in% colnames(users))) {
-    users
+  if (!file.exists(userfile)) {
+    stop("Userfile does not exist")
   } else {
-    stop("Userfile must include the columns ", paste0(cols, collapse = ", "))
+    users <- read.csv(userfile, stringsAsFactors = FALSE)
+    if (all(cols %in% colnames(users))) {
+      users
+    } else {
+      stop("Userfile must include the columns ", paste0(cols, collapse = ", "))
+    }
   }
 }
 
-groupID <- function(name, path, token, server) {
+groupID <- function(name, path, token, server, page = 1) {
+
   h <- new_handle()
   handle_setheaders(h, "PRIVATE-TOKEN" = token)
-  murl <- paste0(server, "groups")
+  murl <- paste0(server, paste0("groups?per_page=100&page=", page, "&search=", name))
   resp <- curl_fetch_memory(murl, h)
+
   if (checkerr(resp$status_code) == FALSE)
     return(list(status = "SERVER_ERROR"))
 
@@ -42,7 +55,6 @@ groupID <- function(name, path, token, server) {
 
   ## check if group exists
   id <- which(name == resp$content$name & path == resp$content$path)
-
   if (length(id) == 0) {
     list(status = "NOSUCHGROUP")
   } else {
@@ -223,8 +235,9 @@ create_group <- function(
   token <- resp$token
   resp <- groupID(groupname, groupname, token, server)
 
-  if (resp$status == "NOSUCHGROUP")
+  if (resp$status == "NOSUCHGROUP") {
     resp <- groupr(groupname, groupname, token, server = server)
+  }
 
   if (resp$status != "OKAY") {
     message("Unable to create or get group: ", resp$message)
@@ -744,11 +757,9 @@ merger <- function(
 }
 
 check_status <- function(
-                         token,
-                         assignment,
-                         userfile,
-                         type = "individual",
-                         server = "https://gitlab.com/api/v4/"
+  token, assignment, userfile,
+  type = "individual",
+  server = "https://gitlab.com/api/v4/"
 ) {
   resp <- connect(token, server)
   if (resp$status != 'OKAY')
@@ -784,16 +795,19 @@ check_status <- function(
       resp$repos <- filter(resp$repos, name == {{ search }})
     }
     pid <- resp$repos$id
-
-    h <- new_handle()
-    handle_setopt(h, customrequest = "GET")
-    handle_setheaders(h, "PRIVATE-TOKEN" = st_token[1])
-    murl <- paste0(server, "projects/", pid, "/pipelines")
-    resp <- curl_fetch_memory(murl, h)
-    resp$content <- fromJSON(rawToChar(resp$content))
-    status <- resp$content$status
-    if (length(status) == 0) status <- "unknown"
-    list(status[1], length(status))
+    if (length(pid) != 1) {
+      list("unclear", 0)
+    } else {
+      h <- new_handle()
+      handle_setopt(h, customrequest = "GET")
+      handle_setheaders(h, "PRIVATE-TOKEN" = st_token[1])
+      murl <- paste0(server, "projects/", pid, "/pipelines")
+      resp <- curl_fetch_memory(murl, h)
+      resp$content <- fromJSON(rawToChar(resp$content))
+      status <- resp$content$status
+      if (length(status) == 0) status <- "unknown"
+      list(status[1], length(status))
+    }
   }
 
   udat$status <- "unknown"

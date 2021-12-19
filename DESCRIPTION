@@ -2,8 +2,8 @@ Package: gitgadget
 Type: Package
 Title: 'Rstudio' Addin for Version Control and Assignment Management
         using Git
-Version: 0.6.4
-Date: 2021-8-8
+Version: 0.6.6
+Date: 2021-12-18
 Authors@R: c(
     person("Vincent", "Nijs", , "vnijs@ucsd.edu", c("aut", "cre")),
     person("Sanjiv", "Erat", , "serat@ucsd.edu", "aut")
@@ -13,7 +13,7 @@ Description: An 'Rstudio' addin for version control that allows users to clone
     Furthermore, the addin uses the GitLab API to allow instructors to create
     forks and merge requests for all students/teams with one click of a button.
 Depends: R (>= 3.6.0)
-Imports: shiny (>= 1.4.0), miniUI (>= 0.1.1.1), rstudioapi (>= 0.7),
+Imports: shiny (>= 1.7.1), miniUI (>= 0.1.1.1), rstudioapi (>= 0.7),
         curl (>= 3.2), jsonlite (>= 1.5), dplyr (>= 0.8.3), shinyFiles
         (>= 0.7.5), callr (>= 2.0.4), usethis (>= 1.5.1), markdown
 Suggests: knitr, rmarkdown
@@ -25,9 +25,9 @@ Encoding: UTF-8
 Language: en-US
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2021-08-11 04:18:20 UTC; jovyan
+Packaged: 2021-12-19 00:26:54 UTC; jovyan
 Author: Vincent Nijs [aut, cre],
   Sanjiv Erat [aut]
 Maintainer: Vincent Nijs <vnijs@ucsd.edu>
 Repository: CRAN
-Date/Publication: 2021-08-11 07:00:02 UTC
+Date/Publication: 2021-12-19 14:30:05 UTC
