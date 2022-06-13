@@ -20,9 +20,7 @@ On macOS, you will you will need to run the command below from a terminal to get
 xcode-select --install;
 ```
 
-On Windows you will need to install git bash from https://git-scm.com/download/win/. Alternatively, you can use the following installer that we use with our students to ensure git is setup correctly for use with gitgadget:
-
-https://rady.ucsd.edu/faculty/directory/vnijs/RSM-MSBA-Computing-Environment-Latest.exe
+On Windows you will need to install git bash from https://git-scm.com/download/win/.  
 
 > Note: Hover over any button in the `gitgadget` application for additional information about what clicking the button will accomplish
 
@@ -37,6 +35,8 @@ Unless you plan to use `gitgadget` to manage student assignments, select `studen
 If you want to use an SSH key, make sure to click on the `Introduce` button, restart Rstudio, and then click on the `SSH key` button. Copy the key shown in GitGadget to the [gitlab.com page](https://gitlab.com/-/profile/keys/) that should have opened in your default browser. To securely connect to gitlab from your computer you will need to restart Rstudio and use `git clone git@some-private-repo` from a terminal in Rstudio the first time you clone a repo. After that, cloning, creating, etc. from GitGadget should work smoothly. See the videos below for a demonstration.
 
 > Note: On Windows we recommend cloning and creating repos using HTTPS rather than SSH
+
+> Note: As of version 0.7.0 the default branch has been set to 'main'
 
 #### Setup for git and gitlab
 
@@ -60,7 +60,7 @@ https://youtu.be/uwqUHl3z37o
 
 Enter the path to a local directory to create a repo on GitLab. If the local directory does not yet exist it will be created. You can also click the `Open` button and navigate to an existing directory. If a `Group name` is provided it will be used to place the repo on GitLab. This is recommended if you are using `gitgadget` for assignment management. If left blank, the GitLab user name will be used as the group. A `Prefix` can be added and will default to the value of `git.prefix` in .Renviron (see _Initial settings_ below). The prefix can be used to avoid conflicting assignment names across classes (e.g., multiple classes using "assignment1").
 
-If you selected `faculty` as the `User type` in the _Introduce_ tab you will have the option to upload a CSV file with student tokens (see below). If a user file is provided, a radio button will be shown that can be used to indicate if the work should be completed individually or in teams. Furthermore, you can choose if you want to _hide_ or _show_ the master class repo to students. _Hiding_ the master repo can avoid confusion where a student might accidentally clone the wrong repo (i.e., the class repo rather than their own fork) and not be able to push there changes back to gitlab. _Showing_ the master repo, on the other hand, will make it possible to _sync_ any changes to the class repo after it was forked for each student.
+If you selected `faculty` as the `User type` in the _Introduce_ tab you will have the option to upload a CSV file with student tokens (see below). If a user file is provided, a radio button will be shown that can be used to indicate if the work should be completed individually or in teams. Furthermore, you can choose if you want to _hide_ or _show_ the main class repo to students. _Hiding_ the main repo can avoid confusion where a student might accidentally clone the wrong repo (i.e., the class repo rather than their own fork) and not be able to push there changes back to gitlab. _Showing_ the main repo, on the other hand, will make it possible to _sync_ any changes to the class repo after it was forked for each student.
 
 If a CSV file with TA information is specified they will be added as "Maintainer" to the class repo. The will also be added as "Maintainer" to all created student (or team) forks. TA information should include `userid`, `token`, and `email`. 
 
@@ -74,7 +74,7 @@ Clone a repo from GitLab (or GitHub) (e.g., `git@gitlab.com:username/test-repo.g
 
 ## Branch
 
-Create a local branch from the active branch by providing a name for the new branch and clicking `Create local`. Link and push to the (GitLab) remote by clicking the `Link remote` button. If remote branches exist click the `Check out` button to work with a branch locally. If branches other than `master` exist you can `Merge branches` or delete them if they are no longer needed. To undo a merge-in-progress, e.g., with merge conflicts, click the `Abort merge` button. `Unlink remote` will not remove the local or the remote branch but only the link to the remote (i.e., the push/pull arrows in R-studio will gray-out).
+Create a local branch from the active branch by providing a name for the new branch and clicking `Create local`. Link and push to the (GitLab) remote by clicking the `Link remote` button. If remote branches exist click the `Check out` button to work with a branch locally. If branches other than `main` exist you can `Merge branches` or delete them if they are no longer needed. To undo a merge-in-progress, e.g., with merge conflicts, click the `Abort merge` button. `Unlink remote` will not remove the local or the remote branch but only the link to the remote (i.e., the push/pull arrows in R-studio will gray-out).
 
 > Note: Changes to the list of available branches may only be visible in R-studio after clicking the `refresh` button in the Git tab.
 

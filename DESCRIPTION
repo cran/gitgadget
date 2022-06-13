@@ -2,8 +2,8 @@ Package: gitgadget
 Type: Package
 Title: 'Rstudio' Addin for Version Control and Assignment Management
         using Git
-Version: 0.6.9
-Date: 2022-5-2
+Version: 0.7.0
+Date: 2022-6-12
 Authors@R: c(
     person("Vincent", "Nijs", , "vnijs@ucsd.edu", c("aut", "cre")),
     person("Sanjiv", "Erat", , "serat@ucsd.edu", "aut")
@@ -25,9 +25,9 @@ Encoding: UTF-8
 Language: en-US
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-05-02 19:38:15 UTC; vnijs
+Packaged: 2022-06-13 03:04:44 UTC; vnijs
 Author: Vincent Nijs [aut, cre],
   Sanjiv Erat [aut]
 Maintainer: Vincent Nijs <vnijs@ucsd.edu>
 Repository: CRAN
-Date/Publication: 2022-05-02 22:52:15 UTC
+Date/Publication: 2022-06-13 06:50:13 UTC
