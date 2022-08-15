@@ -11,7 +11,8 @@ pressed <- function(x) !is.null(x) && (is.list(x) || x > 0)
 not_pressed <- function(x) !pressed(x)
 
 source("init.R", local = TRUE)
-source("./gitgadget_ui.R", local = TRUE); ui <- gitgadget_ui()
+source("./gitgadget_ui.R", local = TRUE)
+ui <- gitgadget_ui()
 server <- function(input, output, session) {
   source("components/legacy.R", local = TRUE)
   source("components/help.R", local = TRUE)
@@ -24,7 +25,9 @@ server <- function(input, output, session) {
   source("components/sync.R", local = TRUE)
   source("components/collect.R", local = TRUE)
   observeEvent(input$done, {
-    stopApp(cat("Stopped GitGadget"))
+    if (!getOption("gitgadget.jupyter", default = FALSE)) {
+      stopApp(cat("Stopped GitGadget"))
+    }
   })
 }
 

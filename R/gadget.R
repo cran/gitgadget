@@ -44,7 +44,9 @@ gitgadget <- function(port = get_port(), host = "127.0.0.1", launch.browser = TR
     source(file.path(gitgadget_dir, "app/components/sync.R"), local = TRUE)
     source(file.path(gitgadget_dir, "app/components/collect.R"), local = TRUE)
     observeEvent(input$done, {
-      stopApp(cat("Stopped GitGadget"))
+      if (!getOption("gitgadget.jupyter", default = FALSE)) {
+        stopApp(cat("Stopped GitGadget"))
+      }
     })
   }
 
