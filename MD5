@@ -1,4 +1,4 @@
-57a704776ea4b09b4dacd058e836220d *DESCRIPTION
+f611148b66c5da167634fabc85ffccbd *DESCRIPTION
 9cd425fcffecccfc8f6b56d0c5a833fe *NAMESPACE
 46dd1cf8241047cd760bf120be2da952 *NEWS.md
 5dd38f23cdce356328266269d79eb78f *R/aaa.R
@@ -6,7 +6,7 @@
 1209388310d37f82d3666d9d8a0d330b *R/git.R
 3fc38caf7cbcdeb53ce29d9b0de33b2f *R/group_management.R
 94b82c74c79aa2ef31dfbf3ab2dd6d42 *README.md
-aa022380f19a1defadd11626cd433a6b *build/vignette.rds
+1bd46ca1b53bd20bd73c22374492c37a *build/vignette.rds
 680f9685769fa74b83bb8c483493bdb2 *inst/app/app.R
 bd0a6734124f28532c398fc9c3d26270 *inst/app/components/branch.R
 59af274cc19e7a7ee720066adbcacc82 *inst/app/components/clone.R
@@ -20,12 +20,12 @@ d1839b1f9307f78de195714e3030ec60 *inst/app/components/repo.R
 b4bb512a20df8353062eb0ae2e018c85 *inst/app/components/sync.R
 d7072577b4c0ca43911bcf769a482c34 *inst/app/data/students.csv
 ed74028834dab32cf6dcb0b5073ec7ab *inst/app/gitgadget_ui.R
-0fb6e177f61b95dd5fab20d7aa3b7ca3 *inst/app/help/help.md
+9927ddc278cd090f39ab6f0fd020b9c1 *inst/app/help/help.md
 58627cddc065149d0b1c7492496eb512 *inst/app/init.R
 7764aa7780ff9439a0266f9a376b4156 *inst/app/www/style.css
 39a18ec85fe49d8a9a26bcd462d988ff *inst/doc/gitgadget.R
 8638f0f336871c0a5ccb1eb089baec76 *inst/doc/gitgadget.Rmd
-cdef505343fce5be175e1d1eccd20da9 *inst/doc/gitgadget.html
+b60fbe2b82e9014cc48b7bbdd7d15422 *inst/doc/gitgadget.html
 6b6736c1a3558d596c42ee0609765071 *inst/rstudio/addins.dcf
 6eebd8655336fb1a8d0555a391e4e226 *man/add_users_repo.Rd
 16396f030e5bed551b37055aa4205060 *man/assign_work.Rd

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Vincent Nijs" />
 
-<meta name="date" content="2023-03-27" />
+<meta name="date" content="2023-08-23" />
 
 <title>Using Git Gadget</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Using Git Gadget</h1>
 <h4 class="author">Vincent Nijs</h4>
-<h4 class="date">2023-03-27</h4>
+<h4 class="date">2023-08-23</h4>
 
 
 
@@ -367,12 +367,12 @@ use the <a href="https://github.com/vnijs/gitgadget/issues/">issue
 tracker</a> on GitHub to suggest enhancements or report problems. To
 install the latest version of <code>gitgadget</code> use the command
 below:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;gitgadget&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;https://radiant-rstats.github.io/minicran/&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;gitgadget&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;https://radiant-rstats.github.io/minicran/&quot;</span>)</span></code></pre></div>
 <p>To start <code>gitgadget</code> click on the Addins menu in Rstudio
 and then on <code>gitgadget</code>.</p>
 <p>On macOS, you will you will need to run the command below from a
 terminal to get access to git commands:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">xcode-select</span> <span class="at">--install</span><span class="kw">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">xcode-select</span> <span class="at">--install</span><span class="kw">;</span></span></code></pre></div>
 <p>On Windows you will need to install git bash from <a href="https://git-scm.com/download/win/" class="uri">https://git-scm.com/download/win/</a>.</p>
 <blockquote>
 <p>Note: Hover over any button in the <code>gitgadget</code> application
@@ -640,16 +640,16 @@ remote branch with the local changes.</p>
 “C:/Users/me/.Renviron”). The easiest way to view <code>.Renviron</code>
 is to click on the <code>Check</code> button in the <em>Introduce</em>
 tab or use <code>usethis::edit_r_environ()</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">git.user</span> = <span class="st">&quot;your-gitlab-id&quot;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">git.email</span> = <span class="st">&quot;youremail@ucsd.edu&quot;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">git.token</span> = <span class="st">&quot;abc123&quot;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">git.home</span> = <span class="st">&quot;~/git&quot;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">git.server</span> = <span class="st">&quot;https://gitlab.com/api/v4/&quot;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">git.group</span> = <span class="st">&quot;school-courseid-2019&quot;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">git.prefix</span> = <span class="st">&quot;school-courseid-2019-&quot;</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">git.userfile</span> = <span class="st">&quot;path-to-user-file.csv&quot;</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">git.tafile</span> = <span class="st">&quot;path-to-ta-file.csv&quot;</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">git.user.type</span> = <span class="st">&quot;faculty&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">git.user</span> = <span class="st">&quot;your-gitlab-id&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">git.email</span> = <span class="st">&quot;youremail@ucsd.edu&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">git.token</span> = <span class="st">&quot;abc123&quot;</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="ex">git.home</span> = <span class="st">&quot;~/git&quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="ex">git.server</span> = <span class="st">&quot;https://gitlab.com/api/v4/&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="ex">git.group</span> = <span class="st">&quot;school-courseid-2019&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="ex">git.prefix</span> = <span class="st">&quot;school-courseid-2019-&quot;</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="ex">git.userfile</span> = <span class="st">&quot;path-to-user-file.csv&quot;</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="ex">git.tafile</span> = <span class="st">&quot;path-to-ta-file.csv&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="ex">git.user.type</span> = <span class="st">&quot;faculty&quot;</span></span></code></pre></div>
 </div>
 </div>
 
