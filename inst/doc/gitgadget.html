@@ -12,7 +12,7 @@
 
 <meta name="author" content="Vincent Nijs" />
 
-<meta name="date" content="2023-08-23" />
+<meta name="date" content="2025-04-06" />
 
 <title>Using Git Gadget</title>
 
@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -62,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Using Git Gadget</h1>
 <h4 class="author">Vincent Nijs</h4>
-<h4 class="date">2023-08-23</h4>
+<h4 class="date">2025-04-06</h4>
 
 
 
@@ -373,7 +373,7 @@ and then on <code>gitgadget</code>.</p>
 <p>On macOS, you will you will need to run the command below from a
 terminal to get access to git commands:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">xcode-select</span> <span class="at">--install</span><span class="kw">;</span></span></code></pre></div>
-<p>On Windows you will need to install git bash from <a href="https://git-scm.com/download/win/" class="uri">https://git-scm.com/download/win/</a>.</p>
+<p>On Windows you will need to install git bash from <a href="https://git-scm.com/download/win" class="uri">https://git-scm.com/download/win</a>.</p>
 <blockquote>
 <p>Note: Hover over any button in the <code>gitgadget</code> application
 for additional information about what clicking the button will
@@ -387,23 +387,10 @@ user name and email). By default, <code>gitgadget</code> will try to
 turn on an appropriate credential helper for your operating system. See
 <a href="https://happygitwithr.com/https-pat.html">https://happygitwithr.com/https-pat.html</a>
 for additional information.</p>
-<p>To create and fork repos and collect merge requests you will need to
-provide a GitLab personal access token. First create the <a href="https://gitlab.com/-/profile/personal_access_tokens/">token on
-GitLab</a> and then copy-and-paste it in the <code>Token</code>
-input.</p>
 <p>Unless you plan to use <code>gitgadget</code> to manage student
 assignments, select <code>student</code> as the <code>User type</code>.
 Finally, enter the main directory where you plan to clone code repos
 (e.g., “C:/Users/me/git”)</p>
-<p>If you want to use an SSH key, make sure to click on the
-<code>Introduce</code> button, restart Rstudio, and then click on the
-<code>SSH key</code> button. Copy the key shown in GitGadget to the <a href="https://gitlab.com/-/profile/keys/">gitlab.com page</a> that
-should have opened in your default browser. To securely connect to
-gitlab from your computer you will need to restart Rstudio and use
-<code>git clone git@some-private-repo</code> from a terminal in Rstudio
-the first time you clone a repo. After that, cloning, creating, etc.
-from GitGadget should work smoothly. See the videos below for a
-demonstration.</p>
 <blockquote>
 <p>Note: On Windows we recommend cloning and creating repos using HTTPS
 rather than SSH</p>

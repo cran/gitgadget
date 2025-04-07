@@ -2,8 +2,8 @@ Package: gitgadget
 Type: Package
 Title: 'Rstudio' Addin for Version Control and Assignment Management
         using Git
-Version: 0.8.1
-Date: 2023-8-23
+Version: 0.8.2
+Date: 2025-4-6
 Authors@R: c(
     person("Vincent", "Nijs", , "vnijs@ucsd.edu", c("aut", "cre")),
     person("Sanjiv", "Erat", , "serat@ucsd.edu", "aut")
@@ -17,17 +17,17 @@ Imports: shiny (>= 1.7.1), miniUI (>= 0.1.1.1), rstudioapi (>= 0.7),
         curl (>= 3.2), jsonlite (>= 1.5), dplyr (>= 0.8.3), shinyFiles
         (>= 0.7.5), callr (>= 2.0.4), usethis (>= 1.5.1), markdown
 Suggests: knitr, rmarkdown
-URL: URL: https://github.com/vnijs/gitgadget
+URL: https://github.com/vnijs/gitgadget
 BugReports: https://github.com/vnijs/gitgadget/issues
 License: GPL-3
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Encoding: UTF-8
 Language: en-US
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2023-08-24 06:14:33 UTC; vnijs
+Packaged: 2025-04-07 01:09:26 UTC; vnijs
 Author: Vincent Nijs [aut, cre],
   Sanjiv Erat [aut]
 Maintainer: Vincent Nijs <vnijs@ucsd.edu>
 Repository: CRAN
-Date/Publication: 2023-08-24 07:50:06 UTC
+Date/Publication: 2025-04-07 02:30:06 UTC
